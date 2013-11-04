@@ -132,7 +132,6 @@ class Translator(models.Model):
     """
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
-    # TODO: Add more interesting fields here (gamify this!)
 
 
 class Owner(models.Model):
