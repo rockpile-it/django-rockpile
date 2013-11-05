@@ -157,9 +157,18 @@ class Translation(models.Model):
     to multiple translators
     """
 
-    language = models.CharField(max_length=7, choices=TRANSLATED_LANGUAGES)
-    translators = models.ManyToManyField(Translator)
-    project = models.ForeignKey(TranslationProject)
+    language = models.CharField(_("Language"), max_length=7, choices=TRANSLATED_LANGUAGES)
+    translators = models.ManyToManyField(Translator, verbose_name=_("Translators"))
+    project = models.ForeignKey(TranslationProject, verbose_name=_("Project"))
+
+    @property
+    def percentage_completed(self):
+        """
+        Returns the percentage of completion for this translation
+        """
+
+        # TODO: Calculate percentage
+        return 0
 
 
 class TranslatedString(models.Model):
@@ -168,8 +177,25 @@ class TranslatedString(models.Model):
 
     A string is linked to a translation and also has a reference to another string that
     will act as the "key" of the translated string.
+
+    A string may be validated by a translator.
     """
 
-    key = models.ForeignKey("self", verbose_name=_("Traduction key"), db_index=True, null=True)
-    value = models.TextField(_("Traduction value"))
-    translation = models.ForeignKey(Translation)
+    key = models.ForeignKey("self", verbose_name=_("Translation key"), db_index=True, null=True)
+    value = models.TextField(_("Translation value"))
+    translation = models.ForeignKey(Translation, verbose_name=_("Translation"))
+    validated_by = models.ForeignKey(Translator, verbose_name=_("Validated by"), null=True)
+
+    @property
+    def is_validated(self):
+        """
+        Shortcut method to check if a string has been validated
+        """
+        return bool(self.validated_by)
+
+    @property
+    def is_main_string(self):
+        """
+        Shortcut method to check if a string is the original string to translate
+        """
+        return self.key is None
