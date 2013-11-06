@@ -8,20 +8,19 @@ test_django-rockpile
 Tests for `django-rockpile` modules module.
 """
 
-import os
-import shutil
-import unittest
-
+from django.test import TestCase
 from rockpile import models
 
 
-class TestRockpile(unittest.TestCase):
+class BasicProjectMixin(object):
 
     def setUp(self):
         pass
+        # TODO: Create here needed objects
+        # models.TranslationProject.objects.create()
 
-    def test_something(self):
-        pass
 
-    def tearDown(self):
-        pass
+class TestTranslatedString(BasicProjectMixin, TestCase):
+    pass
+
+    # TODO: make a lot of tests!
