@@ -121,7 +121,6 @@ class Translation(models.Model):
         Returns the percentage of completion for this translation
         """
 
-        # TODO: Calculate percentage
         num_strings = TranslatedString.objects.with_translation(self).count()
         if num_strings:
             num_validated_strings = TranslatedString.objects.validated(self).count()
