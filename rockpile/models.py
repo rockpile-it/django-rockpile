@@ -42,12 +42,12 @@ class TranslationProject(models.Model):
 
 class TranslatedStringManager(models.Manager):
 
-    def with_translation(self, translation):
+    def strings(self, translation):
         """
-        Returns a queryset with "main" strings
+        Returns a queryset with translated strings
         """
 
-        return self.get_queryset().filter(translation=translation)
+        return self.get_queryset().filter(translation=translation, key__isnull=False)
 
     def keys(self, translation):
         """
@@ -121,7 +121,7 @@ class Translation(models.Model):
         Returns the percentage of completion for this translation
         """
 
-        num_strings = TranslatedString.objects.with_translation(self).count()
+        num_strings = TranslatedString.objects.strings(self).count()
         if num_strings:
             num_validated_strings = TranslatedString.objects.validated(self).count()
             return num_validated_strings * 100.0 / num_strings
