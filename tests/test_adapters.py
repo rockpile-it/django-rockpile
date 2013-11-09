@@ -7,28 +7,27 @@ Test adapters
 
 Tests for `django-rockpile` adapters module.
 """
+import tempfile
 
 from django.test import TestCase
 
 from rockpile.adapters import AndroidStrings
 
-try:
-    from StringIO import StringIO
-except ImportError:  # pragma: no cover
-    from io import StringIO
-
 
 class AndroidStringsTest(TestCase):
 
     def setUp(self):
-        input_data = r'''<?xml version="1.0" encoding="utf-8"?>
+        input_data = u'''<?xml version="1.0" encoding="utf-8"?>
                          <resources>
                             <string name="app_name">Hola rockpile</string>
                             <string name="info_text">probando android</string>
                          <color name="White">#ffffff</color>
                          </resources>'''
-        file_obj = StringIO(input_data)
+        file_obj = tempfile.TemporaryFile()
+        file_obj.write(input_data.encode('utf-8'))
+        file_obj.seek(0)
         self.android_strings = AndroidStrings(file_obj)
+        file_obj.close()
 
     def test_len(self):
         self.assertEqual(len(self.android_strings), 2)
