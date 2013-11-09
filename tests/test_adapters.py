@@ -45,4 +45,4 @@ class AndroidStringsTest(TestCase):
 
     def test_iter(self):
         expected_value = [('app_name', 'Hola rockpile'), ('info_text', 'probando android')]
-        self.assertEqual(expected_value, self.android_strings.items())
+        self.assertEqual(expected_value, list(self.android_strings.items()))
