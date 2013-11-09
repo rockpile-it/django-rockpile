@@ -8,6 +8,9 @@ django-rockpile
 .. image:: https://travis-ci.org/rockpile-it/django-rockpile.png?branch=master
         :target: https://travis-ci.org/rockpile-it/django-rockpile
 
+.. image:: https://coveralls.io/repos/rockpile-it/django-rockpile/badge.png
+        :target: https://coveralls.io/r/rockpile-it/django-rockpile
+
 .. image:: https://pypip.in/d/django-rockpile/badge.png
         :target: https://crate.io/packages/django-rockpile?version=latest
 
