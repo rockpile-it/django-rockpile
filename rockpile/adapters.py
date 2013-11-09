@@ -29,7 +29,7 @@ Each `strings.xml` file represents one language.
 
 '''
 
-from collections import MutableMapping
+from collections import MutableMapping, OrderedDict
 from lxml import etree
 
 
@@ -115,4 +115,8 @@ class AndroidStrings(TranslatableStrings):
 
         # LXML parses the XML and stores data in a python dict for an easier use
         self._xml = etree.parse(file_obj)
-        self._data = {e.attrib['name']: e.text for e in self._xml.findall("./string")}
+
+        # Stores data in order
+        self._data = OrderedDict()
+        for element in self._xml.findall("./string"):
+            self._data[element.attrib['name']] = element.text
