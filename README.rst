@@ -31,7 +31,7 @@ Install django-rockpile::
 
 Then use it in a project::
 
-	import django-rockpile
+	import rockpile
 
 Features
 --------
