@@ -25,13 +25,43 @@ class BasicProjectMixin(object):
         self.translation.save()
 
         # Translated strings
-        self.main_string = models.TranslatedString.objects.create(value='Hello world', translation=self.translation)
-        models.TranslatedString.objects.create(key=self.main_string, value='Hola mundo', translation=self.translation, validated_by=self.translator)
+        self.main_string1 = models.TranslatedString.objects.create(value='Hello world', translation=self.translation)
+        self.translated_string1 = models.TranslatedString.objects.create(key=self.main_string1, value='Hola mundo',
+                                                                         translation=self.translation, validated_by=self.translator)
         self.main_string2 = models.TranslatedString.objects.create(value='Testing string', translation=self.translation)
-        models.TranslatedString.objects.create(key=self.main_string2, value='Probando cadena', translation=self.translation)
+        self.translated_string2 = models.TranslatedString.objects.create(key=self.main_string2, value='Probando cadena',
+                                                                         translation=self.translation)
 
 
 class TestTranslation(BasicProjectMixin, TestCase):
 
     def test_percentage_completion(self):
         self.assertEqual(self.translation.percentage_completed, 50.0)
+
+
+class TestTranslatedString(BasicProjectMixin, TestCase):
+
+    def test_is_validated_property(self):
+        self.assertEqual(self.main_string1.is_validated, False)
+        self.assertEqual(self.translated_string1.is_validated, True)
+        self.assertEqual(self.translated_string2.is_validated, False)
+
+    def test_is_main_string_property(self):
+        self.assertEqual(self.main_string1.is_main_string, True)
+        self.assertEqual(self.translated_string1.is_main_string, False)
+
+    def test_manager_strings(self):
+        expected_result = [self.translated_string1, self.translated_string2]
+        self.assertEquals(list(models.TranslatedString.objects.strings(self.translation)), expected_result)
+
+    def test_manager_keys(self):
+        expected_result = [self.main_string1, self.main_string2]
+        self.assertEquals(list(models.TranslatedString.objects.keys(self.translation)), expected_result)
+
+    def test_manager_validated(self):
+        expected_result = [self.translated_string1]
+        self.assertEquals(list(models.TranslatedString.objects.validated(self.translation)), expected_result)
+
+    def test_manager_not_validated(self):
+        expected_result = [self.translated_string2]
+        self.assertEquals(list(models.TranslatedString.objects.not_validated(self.translation)), expected_result)

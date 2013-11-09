@@ -68,7 +68,7 @@ class TranslatedStringManager(models.Manager):
         Returns a queryset with not validated strings
         """
 
-        return self.get_queryset().filter(translation=translation, validated_by__isnull=True)
+        return self.strings(translation).filter(validated_by__isnull=True)
 
 
 class TranslatedString(models.Model):
