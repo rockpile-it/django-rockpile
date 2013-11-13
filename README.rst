@@ -17,6 +17,13 @@ django-rockpile
 
 Translation made easy
 
+Warning
+-------------
+
+This project is still in an early phase of development, its functionality is very 
+limited by now and many things may be broken
+
+
 Documentation
 -------------
 
@@ -25,13 +32,21 @@ The full documentation is at http://django-rockpile.rtfd.org.
 Quickstart
 ----------
 
-Install django-rockpile::
+Install django-rockpile:
+
+.. code-block :: bash
 
     pip install django-rockpile
 
-Then use it in a project::
+Configure:
 
-	import rockpile
+.. code-block :: python
+
+    INSTALLED_APPS = (
+        ...
+        'rockpile',
+    )
+
 
 Features
 --------
