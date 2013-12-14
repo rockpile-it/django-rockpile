@@ -113,6 +113,8 @@ class AndroidStrings(TranslatableStrings):
         :type file_obj: file-like obj
         """
 
+        super(AndroidStrings, self).__init__()
+
         # LXML parses the XML and stores data in a python dict for an easier use
         self._xml = etree.parse(file_obj)
 

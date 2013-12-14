@@ -24,6 +24,12 @@ class BasicProjectMixin(object):
         self.translation.translators.add(self.translator)
         self.translation.save()
 
+
+class FewStringsProjectMixin(BasicProjectMixin):
+
+    def setUp(self):
+        super(FewStringsProjectMixin, self).setUp()
+
         # Translated strings
         self.main_string1 = models.TranslatedString.objects.create(value='Hello world', translation=self.translation)
         self.translated_string1 = models.TranslatedString.objects.create(key=self.main_string1, value='Hola mundo',
@@ -33,13 +39,19 @@ class BasicProjectMixin(object):
                                                                          translation=self.translation)
 
 
-class TestTranslation(BasicProjectMixin, TestCase):
+class TestTranslationEmptyStrings(BasicProjectMixin, TestCase):
+
+    def test_percentage_completion(self):
+        self.assertEqual(self.translation.percentage_completed, 0.0)
+
+
+class TestTranslation(FewStringsProjectMixin, TestCase):
 
     def test_percentage_completion(self):
         self.assertEqual(self.translation.percentage_completed, 50.0)
 
 
-class TestTranslatedString(BasicProjectMixin, TestCase):
+class TestTranslatedString(FewStringsProjectMixin, TestCase):
 
     def test_is_validated_property(self):
         self.assertEqual(self.main_string1.is_validated, False)
